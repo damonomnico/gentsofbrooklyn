@@ -312,5 +312,6 @@ Sat 9am to 3pm</span>
 function pick(d){doors.forEach(function(x){var on=x===d;if(on){x.setAttribute('data-on','');}else{x.removeAttribute('data-on');}var b=x.querySelector('[data-door-btn]');if(b){b.setAttribute('aria-expanded',on?'true':'false');}});}
 doors.forEach(function(d){d.addEventListener('mouseenter',function(){pick(d);});var b=d.querySelector('[data-door-btn]');if(b){b.addEventListener('click',function(){pick(d);});b.addEventListener('focus',function(){pick(d);});}});})();
 </script>
+<script src="notes/notes.js?v=1" defer></script>
 </body>
 </html>
