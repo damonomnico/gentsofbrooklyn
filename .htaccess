@@ -1,1 +1,9 @@
 DirectoryIndex index.html index.php
+
+# These are review pages that change often, so browsers must check for a new copy each time.
+<IfModule mod_headers.c>
+<FilesMatch "\.html$">
+Header set Cache-Control "no-cache, must-revalidate"
+Header unset Expires
+</FilesMatch>
+</IfModule>
