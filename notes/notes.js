@@ -12,6 +12,7 @@ window.__gobNotes = true;
 var script = document.currentScript;
 var API = script && script.src ? new URL('api.php', script.src).href : 'notes/api.php';
 var PAGE = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+if (/^[a-z0-9][a-z0-9-]{0,40}$/.test(PAGE)) PAGE += '.html'; // pages are also served without the .html ending
 if (!/^[a-z0-9][a-z0-9-]{0,40}\.html$/.test(PAGE)) PAGE = 'index.html';
 var PAGES = {
   'index.html': 'Concepts menu',
@@ -23,6 +24,7 @@ var PAGES = {
   'gallery.html': 'Gallery'
 };
 var PAGE_ORDER = Object.keys(PAGES);
+function pageUrl(pg) { return pg === 'index.html' ? './' : pg.replace(/\.html$/, ''); }
 
 var store = {
   get: function (k) { try { return localStorage.getItem('gobNotes.' + k); } catch (e) { return null; } },
@@ -627,7 +629,7 @@ function listItem(n, showPage) {
     ])
   ];
   if (here) return h('button', { type: 'button', class: 'item' + (n.id === S.open ? ' cur' : ''), onclick: function () { openNote(n.id, true); } }, inner);
-  return h('a', { class: 'item', href: n.page + '#note-' + n.id }, inner);
+  return h('a', { class: 'item', href: pageUrl(n.page) + '#note-' + n.id }, inner);
 }
 
 function renderPanel() {
@@ -664,7 +666,7 @@ function renderPanel() {
     PAGE_ORDER.concat(Object.keys(shown.reduce(function (m, n) { if (!PAGES[n.page]) m[n.page] = 1; return m; }, {}))).forEach(function (pg) {
       var group = shown.filter(function (n) { return n.page === pg; });
       if (!group.length) return;
-      list.appendChild(h('p', { class: 'grp' }, [PAGES[pg] || pg, pg === PAGE ? h('span', { text: 'This page', style: 'text-transform:none;letter-spacing:0;font-weight:600' }) : h('a', { href: pg, text: 'Open page' })]));
+      list.appendChild(h('p', { class: 'grp' }, [PAGES[pg] || pg, pg === PAGE ? h('span', { text: 'This page', style: 'text-transform:none;letter-spacing:0;font-weight:600' }) : h('a', { href: pageUrl(pg), text: 'Open page' })]));
       group.forEach(function (n) { list.appendChild(listItem(n, true)); });
     });
   }

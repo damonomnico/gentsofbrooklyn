@@ -1,6 +1,10 @@
 DirectoryIndex index.html index.php
 
-# These are review pages that change often, so browsers must check for a new copy each time.
+# Review pages change often. Each is also served at an address without ".html",
+# which this server lets us mark as "always check for a new copy".
+RewriteEngine On
+RewriteRule ^(dark|contrast|light|modern-classic|contemporary|gallery)/?$ $1.html [L]
+
 <IfModule mod_headers.c>
 <FilesMatch "\.html$">
 Header set Cache-Control "no-cache, must-revalidate"
